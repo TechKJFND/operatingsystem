@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXUS-OS v5.0 | Cybernetic Workspace Simulation</title>
-<meta name="description" content="NEXUS-OS is an interactive desktop operating system simulator featuring real-time window management, playable retro mini-games, dynamic filesystem, terminal emulator, and live telemetry tracking.">
+<title>NEXUS-OS v5.5 | Cybernetic Workspace Simulation</title>
+<meta name="description" content="NEXUS-OS is an interactive desktop operating system simulator featuring real-time window management, playable retro mini-games, dynamic filesystem, terminal emulator, password-protected vault, functional browser, and live telemetry tracking.">
 <style>
 :root {
     --bg: #030609;
@@ -209,6 +209,7 @@ h1 span {
     transition: 0.3s;
     cursor: pointer;
     display: inline-block;
+    border: none;
 }
 
 .btn-primary {
@@ -333,7 +334,7 @@ h2 {
 /* REALISTIC DRAGGABLE & RESIZABLE WINDOW SYSTEM */
 .os-window {
     position: absolute;
-    width: 420px;
+    width: 440px;
     height: 320px;
     background: var(--win-bg);
     border: 1px solid var(--neon-cyan);
@@ -545,12 +546,67 @@ h2 {
     color: var(--neon-cyan);
 }
 
+/* VAULT STYLING */
+.vault-input {
+    background: #020406;
+    border: 1px solid var(--panel-border);
+    color: var(--neon-green);
+    padding: 6px 12px;
+    font-family: monospace;
+    border-radius: 4px;
+    width: 100%;
+    margin-top: 8px;
+    outline: none;
+}
+
+.vault-input:focus {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 10px rgba(57, 217, 255, 0.2);
+}
+
+.vault-unlocked {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+}
+
 /* GAME CANVAS */
 #snakeCanvas {
     background: #020508;
     border: 1px solid var(--neon-green);
     display: block;
     margin: 10px auto;
+}
+
+/* BROWSER INTERACTION */
+.browser-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.browser-input {
+    flex: 1;
+    background: #020406;
+    border: 1px solid var(--panel-border);
+    color: var(--neon-cyan);
+    padding: 6px 10px;
+    font-family: monospace;
+    font-size: 0.75rem;
+    border-radius: 4px;
+    outline: none;
+}
+
+.browser-input:focus {
+    border-color: var(--neon-cyan);
+}
+
+.browser-frame {
+    background: #020406;
+    border: 1px solid var(--panel-border);
+    padding: 12px;
+    min-height: 180px;
+    border-radius: 4px;
 }
 
 /* LAYOUT 2-COLUMN STRUCTURE FOR SECTIONS */
@@ -808,7 +864,7 @@ footer strong {
 <section class="hero">
     <div class="badge">⚠ CLASSIFIED FACILITY — LEVEL 07</div>
     <h1>NEXUS-OS <span>DESKTOP ENVIRONMENT</span></h1>
-    <p>A realistic interactive web desktop simulation equipped with draggable windows, live shell execution, customizable theme controls, and direct terminal protocols.</p>
+    <p>A realistic interactive web desktop simulation equipped with draggable windows, live shell execution, interactive browser navigation, password-secured vaults, and customizable theme controls.</p>
     <div class="btn-group">
         <a href="#simulator" class="btn btn-primary">LAUNCH SIMULATOR</a>
         <a href="#files" class="btn btn-secondary">VIEW ARCHIVES</a>
@@ -819,7 +875,7 @@ footer strong {
 <section id="simulator">
     <div class="section-title">// SYSTEM WORKSTATION</div>
     <h2>Interactive Desktop Simulator</h2>
-    <p class="section-desc">Experience a realistic desktop environment. Open windows, type commands in the interactive terminal, launch mini-games, or adjust system settings in real time.</p>
+    <p class="section-desc">Experience a realistic desktop environment. Open windows, execute shell commands, navigate websites, unlock encrypted vaults, or play retro games in real time.</p>
 
     <div class="desktop-frame">
         <div class="desktop-container" id="desktopContainer">
@@ -859,7 +915,7 @@ footer strong {
                     <div class="window-controls"><span class="win-btn win-close" onclick="closeWindow('win-terminal')"></span></div>
                 </div>
                 <div class="window-body" id="termBody">
-                    <p>> NEXUS-OS [Version 5.0.1]</p>
+                    <p>> NEXUS-OS [Version 5.5.0]</p>
                     <p>> Type <span style="color:var(--neon-green)">'help'</span> to view available system commands.</p>
                     <div id="termOutput"></div>
                     <div class="term-input-line">
@@ -878,24 +934,33 @@ footer strong {
                 <div class="window-body">
                     <div class="file-item" onclick="readDoc('kernel.sys', 'Core kernel system file. Status: Operational.')">📄 kernel.sys</div>
                     <div class="file-item" onclick="readDoc('network.log', 'Sub-space network ping logs. Zero packet loss detected.')">📄 network.log</div>
+                    <div class="file-item" onclick="readDoc('passwords.txt', 'HINT: The Vault password is stored in memory bank NEXUS77')">📄 passwords.txt</div>
                     <div class="file-item" onclick="readDoc('bio_matrix.enc', 'ENCRYPTED DATA: Requires Bio-Level Clearance.')">🔐 bio_matrix.enc</div>
                     <div id="fileContentDisplay" style="margin-top:15px; padding:10px; border:1px solid var(--panel-border); background:#020406; display:none;"></div>
                 </div>
             </div>
 
             <!-- CYBER-NET BROWSER WINDOW -->
-            <div id="win-browser" class="os-window" style="top: 100px; left: 180px; width: 420px;">
+            <div id="win-browser" class="os-window" style="top: 100px; left: 180px; width: 440px;">
                 <div class="window-header" onmousedown="dragWindow(event, 'win-browser')">
                     <span class="window-title">🌐 CYBER-NET BROWSER</span>
                     <div class="window-controls"><span class="win-btn win-close" onclick="closeWindow('win-browser')"></span></div>
                 </div>
                 <div class="window-body">
-                    <div style="display:flex; gap:8px; margin-bottom:12px;">
-                        <input type="text" value="https://nexus.local/mesh" readonly style="flex:1; background:#020406; border:1px solid var(--panel-border); color:var(--neon-cyan); padding:4px 8px; font-family:monospace; font-size:0.75rem;">
+                    <div class="browser-bar">
+                        <input type="text" id="browserUrl" class="browser-input" value="https://nexus.local/mesh" onkeydown="handleBrowserNav(event)">
+                        <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.7rem;" onclick="navigateBrowser()">GO</button>
                     </div>
-                    <p style="color: var(--neon-cyan); margin-top:0;">[SECURE MESH INTRA-NET]</p>
-                    <p>Facial recognition nodes online. Internal bandwidth: 100 Gbps.</p>
-                    <p>Active nodes: Level 07 Bio-Core, Quantum AI Hub.</p>
+                    <div class="browser-frame" id="browserContent">
+                        <p style="color: var(--neon-cyan); margin-top:0;">[SECURE MESH INTRA-NET]</p>
+                        <p>Facial recognition nodes online. Internal bandwidth: 100 Gbps.</p>
+                        <p>Try typing URLs like:</p>
+                        <ul style="padding-left:20px; color:var(--text-muted);">
+                            <li>nexus.local/mesh</li>
+                            <li>nexus.local/logs</li>
+                            <li>nexus.local/vault-override</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
@@ -929,15 +994,33 @@ footer strong {
                 </div>
             </div>
 
-            <!-- SECRET CLASSIFIED VAULT WINDOW -->
-            <div id="win-secret" class="os-window" style="top: 120px; left: 160px; width: 360px;">
+            <!-- SECRET CLASSIFIED VAULT WINDOW (PASSWORD PROTECTED) -->
+            <div id="win-secret" class="os-window" style="top: 120px; left: 160px; width: 380px;">
                 <div class="window-header" onmousedown="dragWindow(event, 'win-secret')">
                     <span class="window-title">🔒 CLASSIFIED VAULT</span>
                     <div class="window-controls"><span class="win-btn win-close" onclick="closeWindow('win-secret')"></span></div>
                 </div>
                 <div class="window-body">
-                    <p style="color: var(--neon-red);">⚠ RESTRICTED ACCESS AREA</p>
-                    <p>Project AI-Genesis: Autonomous Neural Network deployment initiated inside sandbox environment.</p>
+                    <!-- LOCKED STATE -->
+                    <div id="vaultLocked">
+                        <p style="color: var(--neon-red); margin-top:0;">⚠ ACCESS RESTRICTED</p>
+                        <p style="font-size:0.8rem; color:var(--text-muted);">Enter administrative override code to unlock vault contents. Check Explorer for hints.</p>
+                        <input type="password" id="vaultPassInput" class="vault-input" placeholder="ENTER ACCESS CODE..." onkeydown="checkVaultPass(event)">
+                        <button class="btn btn-primary" style="width:100%; margin-top:10px; padding:8px;" onclick="unlockVault()">AUTHENTICATE</button>
+                        <p id="vaultError" style="color:var(--neon-red); font-size:0.75rem; margin-top:8px; display:none;">ACCESS DENIED: INVALID KEYCODE</p>
+                    </div>
+
+                    <!-- UNLOCKED STATE -->
+                    <div id="vaultUnlocked" class="vault-unlocked">
+                        <p style="color: var(--neon-green); margin-top:0;">✔ ACCESS GRANTED — LEVEL 07 UNLOCKED</p>
+                        <div style="border:1px solid var(--panel-border); padding:10px; background:#020406; border-radius:4px;">
+                            <p style="margin:0 0 6px; color:var(--neon-cyan); font-weight:bold;">Project AI-Genesis Logs</p>
+                            <p style="font-size:0.75rem; color:var(--text-muted); margin:0;">Autonomous Neural Network deployment initiated inside sandbox environment. Sub-protocol override active.</p>
+                        </div>
+                        <p style="font-size:0.8rem; margin-bottom:4px;">Launch Vault Subroutines:</p>
+                        <button class="btn btn-secondary" style="padding:6px 12px; font-size:0.75rem; text-align:left;" onclick="openWindow('win-terminal'); runTerminalCmd('unlock-deep-core')">⚡ Trigger Core Protocol in Shell</button>
+                        <button class="btn btn-secondary" style="padding:6px 12px; font-size:0.75rem; text-align:left;" onclick="openWindow('win-browser'); loadBrowserUrl('nexus.local/vault-override')">🌐 Load Quantum Data in Browser</button>
+                    </div>
                 </div>
             </div>
 
@@ -946,6 +1029,7 @@ footer strong {
                 <div class="start-item" onclick="openWindow('win-terminal'); toggleStart();">💻 Terminal</div>
                 <div class="start-item" onclick="openWindow('win-files'); toggleStart();">📁 File Explorer</div>
                 <div class="start-item" onclick="openWindow('win-browser'); toggleStart();">🌐 Cyber-Net</div>
+                <div class="start-item" onclick="openWindow('win-secret'); toggleStart();">🔒 Vault</div>
                 <div class="start-item" onclick="openWindow('win-games'); toggleStart();">🎮 CyberSnake Mini</div>
                 <div class="start-item" onclick="openWindow('win-settings'); toggleStart();">⚙ Control Panel</div>
             </div>
@@ -958,6 +1042,7 @@ footer strong {
                         <span class="taskbar-tab" id="tab-win-terminal" onclick="openWindow('win-terminal')">Terminal</span>
                         <span class="taskbar-tab" id="tab-win-files" onclick="openWindow('win-files')">Explorer</span>
                         <span class="taskbar-tab" id="tab-win-browser" onclick="openWindow('win-browser')">Browser</span>
+                        <span class="taskbar-tab" id="tab-win-secret" onclick="openWindow('win-secret')">Vault</span>
                     </div>
                 </div>
                 <div class="sys-time" id="clock">00:00:00</div>
@@ -1211,47 +1296,114 @@ function stopDrag() {
     document.removeEventListener('mouseup', stopDrag);
 }
 
+// VAULT UNLOCK SYSTEM
+function checkVaultPass(e) {
+    if (e.key === 'Enter') unlockVault();
+}
+
+function unlockVault() {
+    const val = document.getElementById('vaultPassInput').value.trim();
+    if (val === 'NEXUS77') {
+        document.getElementById('vaultLocked').style.display = 'none';
+        document.getElementById('vaultUnlocked').style.display = 'flex';
+        document.getElementById('vaultError').style.display = 'none';
+    } else {
+        document.getElementById('vaultError').style.display = 'block';
+    }
+}
+
+// BROWSER NAVIGATION SYSTEM
+function handleBrowserNav(e) {
+    if (e.key === 'Enter') navigateBrowser();
+}
+
+function navigateBrowser() {
+    const url = document.getElementById('browserUrl').value.trim().toLowerCase();
+    loadBrowserUrl(url);
+}
+
+function loadBrowserUrl(url) {
+    document.getElementById('browserUrl').value = url;
+    const content = document.getElementById('browserContent');
+
+    if (url.includes('nexus.local/mesh')) {
+        content.innerHTML = `
+            <p style="color: var(--neon-cyan); margin-top:0;">[SECURE MESH INTRA-NET]</p>
+            <p>Facial recognition nodes online. Internal bandwidth: 100 Gbps.</p>
+            <p>Active nodes: Level 07 Bio-Core, Quantum AI Hub.</p>
+        `;
+    } else if (url.includes('nexus.local/logs')) {
+        content.innerHTML = `
+            <p style="color: var(--neon-amber); margin-top:0;">[SYSTEM AUDIT LOGS]</p>
+            <p>04:10:22 - Admin login detected from Terminal 1</p>
+            <p>04:11:05 - System password cache loaded</p>
+            <p>04:15:40 - Encrypted Vault Ping Received</p>
+        `;
+    } else if (url.includes('nexus.local/vault-override')) {
+        content.innerHTML = `
+            <p style="color: var(--neon-green); margin-top:0;">[QUANTUM DATA OVERRIDE HOST]</p>
+            <p>Receiving incoming stream from Vault...</p>
+            <p style="color:var(--neon-purple); font-weight:bold;">[STREAM OK] - 100% Signal Integrity</p>
+            <p>All system parameters running in heightened stability mode.</p>
+        `;
+    } else {
+        content.innerHTML = `
+            <p style="color: var(--neon-red); margin-top:0;">404 - MESH NODE NOT FOUND</p>
+            <p>Unable to resolve path: <i>${url}</i></p>
+            <p style="font-size:0.75rem; color:var(--text-muted);">Try visiting <b>nexus.local/mesh</b> or <b>nexus.local/logs</b></p>
+        `;
+    }
+}
+
 // INTERACTIVE TERMINAL ENGINE
 function handleTerminal(e) {
     if (e.key === 'Enter') {
         const input = document.getElementById('termInput');
-        const cmd = input.value.trim().toLowerCase();
-        const output = document.getElementById('termOutput');
-
-        const line = document.createElement('p');
-        line.innerHTML = `<span style="color:var(--neon-green)">user@nexus:~#</span> ${cmd}`;
-        output.appendChild(line);
-
-        const response = document.createElement('p');
-        response.style.color = 'var(--neon-cyan)';
-
-        switch (cmd) {
-            case 'help':
-                response.innerHTML = 'Commands: <br>- <b>status</b>: Display core system telemetry<br>- <b>clear</b>: Clear terminal screen<br>- <b>ls</b>: List root files<br>- <b>whoami</b>: Show user credentials';
-                break;
-            case 'status':
-                response.innerText = 'POWER REACTOR: 98% | NEURAL CORE: OPTIMAL | SHIELDS: 91%';
-                break;
-            case 'clear':
-                output.innerHTML = '';
-                input.value = '';
-                return;
-            case 'ls':
-                response.innerText = 'kernel.sys  network.log  bio_matrix.enc';
-                break;
-            case 'whoami':
-                response.innerText = 'Logged in as: LEVEL_07_ADMINISTRATOR';
-                break;
-            default:
-                response.style.color = 'var(--neon-red)';
-                response.innerText = `Command not recognized: '${cmd}'. Type 'help' for available commands.`;
-        }
-
-        output.appendChild(response);
+        const cmd = input.value.trim();
+        runTerminalCmd(cmd);
         input.value = '';
-        const body = document.getElementById('termBody');
-        body.scrollTop = body.scrollHeight;
     }
+}
+
+function runTerminalCmd(cmd) {
+    const output = document.getElementById('termOutput');
+    const cleanCmd = cmd.toLowerCase().trim();
+
+    const line = document.createElement('p');
+    line.innerHTML = `<span style="color:var(--neon-green)">user@nexus:~#</span> ${cmd}`;
+    output.appendChild(line);
+
+    const response = document.createElement('p');
+    response.style.color = 'var(--neon-cyan)';
+
+    switch (cleanCmd) {
+        case 'help':
+            response.innerHTML = 'Commands: <br>- <b>status</b>: Display core system telemetry<br>- <b>clear</b>: Clear terminal screen<br>- <b>ls</b>: List root files<br>- <b>whoami</b>: Show user credentials<br>- <b>unlock-deep-core</b>: Run Vault protocol';
+            break;
+        case 'status':
+            response.innerText = 'POWER REACTOR: 98% | NEURAL CORE: OPTIMAL | SHIELDS: 91%';
+            break;
+        case 'clear':
+            output.innerHTML = '';
+            return;
+        case 'ls':
+            response.innerText = 'kernel.sys  network.log  passwords.txt  bio_matrix.enc';
+            break;
+        case 'whoami':
+            response.innerText = 'Logged in as: LEVEL_07_ADMINISTRATOR';
+            break;
+        case 'unlock-deep-core':
+            response.style.color = 'var(--neon-green)';
+            response.innerText = '[VAULT SIGNAL RECEIVED] Executing Deep Core Analysis... Subroutines fully integrated.';
+            break;
+        default:
+            response.style.color = 'var(--neon-red)';
+            response.innerText = `Command not recognized: '${cmd}'. Type 'help' for available commands.`;
+    }
+
+    output.appendChild(response);
+    const body = document.getElementById('termBody');
+    body.scrollTop = body.scrollHeight;
 }
 
 // FILE EXPLORER READER
