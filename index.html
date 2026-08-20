@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXUS-OS | Quantum Cybernetic Operating System</title>
-<meta name="description" content="NEXUS-OS is a next-generation sci-fi operating system simulator featuring real-time terminal emulation, system diagnostic telemetry, and interactive cyberware modules.">
+<title>NEXUS-OS v5.0 | Cybernetic Workspace Simulation</title>
+<meta name="description" content="NEXUS-OS is an interactive desktop operating system simulator featuring real-time window management, playable retro mini-games, dynamic filesystem, terminal emulator, and live telemetry tracking.">
 <style>
 :root {
     --bg: #030609;
@@ -17,6 +17,7 @@
     --neon-red: #ff465d;
     --text: #e7fff4;
     --text-muted: #71928a;
+    --win-bg: #060e12;
 }
 
 * {
@@ -39,7 +40,7 @@ body {
     cursor: default;
 }
 
-/* SCANLINE EFFECT */
+/* SCANLINE OVERLAY */
 body::before {
     content: "";
     position: fixed;
@@ -68,7 +69,7 @@ body::after {
     top: var(--my, -30px);
     transform: translate(-50%, -50%);
     box-shadow: 0 0 10px var(--neon-green), inset 0 0 5px var(--neon-green);
-    transition: width 0.2s, height 0.2s;
+    transition: width 0.15s, height 0.15s;
 }
 
 /* PARTICLES */
@@ -111,7 +112,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding: 16px 8%;
-    background: rgba(3, 6, 9, 0.75);
+    background: rgba(3, 6, 9, 0.85);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--panel-border);
 }
@@ -145,13 +146,13 @@ nav a:hover {
 
 /* HERO SECTION */
 .hero {
-    min-height: 85vh;
+    min-height: 75vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 80px 8% 40px;
+    padding: 60px 8% 30px;
 }
 
 .badge {
@@ -171,7 +172,7 @@ nav a:hover {
 }
 
 h1 {
-    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
     margin: 0;
     line-height: 0.95;
     letter-spacing: -2px;
@@ -207,6 +208,7 @@ h1 span {
     text-transform: uppercase;
     transition: 0.3s;
     cursor: pointer;
+    display: inline-block;
 }
 
 .btn-primary {
@@ -237,7 +239,7 @@ h1 span {
 section {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 80px 8%;
+    padding: 70px 8%;
 }
 
 .section-title {
@@ -259,29 +261,37 @@ h2 {
     margin-bottom: 40px;
 }
 
-/* DESKTOP SIMULATOR CONTAINER */
+/* HIGH-REALISM DESKTOP SIMULATOR CONTAINER */
+.desktop-frame {
+    background: #020304;
+    border: 2px solid var(--panel-border);
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.9), 0 0 40px rgba(57, 255, 156, 0.15);
+    position: relative;
+}
+
 .desktop-container {
     background: var(--panel);
-    border: 1px solid var(--panel-border);
+    border: 1px solid rgba(23, 55, 47, 0.6);
     border-radius: 8px;
-    height: 550px;
+    height: 640px;
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(57, 255, 156, 0.1);
 }
 
 .desktop-screen {
     flex: 1;
     position: relative;
-    padding: 20px;
+    padding: 25px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    grid-template-rows: repeat(auto-fill, 90px);
-    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    grid-template-rows: repeat(auto-fill, 100px);
+    gap: 20px;
     align-content: start;
-    background: radial-gradient(circle at center, #0a1c1d 0%, #030609 80%);
+    background: radial-gradient(circle at center, #07191d 0%, #020508 85%);
 }
 
 .app-icon {
@@ -290,44 +300,54 @@ h2 {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    border-radius: 6px;
-    padding: 8px;
-    transition: 0.2s;
+    border-radius: 8px;
+    padding: 10px;
+    transition: all 0.2s;
     cursor: pointer;
+    border: 1px solid transparent;
 }
 
 .app-icon:hover {
-    background: rgba(57, 255, 156, 0.1);
-    box-shadow: 0 0 10px rgba(57, 255, 156, 0.2);
+    background: rgba(57, 255, 156, 0.08);
+    border-color: rgba(57, 255, 156, 0.3);
+    box-shadow: 0 0 15px rgba(57, 255, 156, 0.2);
+    transform: scale(1.05);
 }
 
 .app-icon svg {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     fill: none;
     stroke: var(--neon-green);
     stroke-width: 2;
+    filter: drop-shadow(0 0 5px var(--neon-green));
 }
 
 .app-icon span {
     font-size: 0.75rem;
     text-align: center;
     color: var(--text);
+    font-weight: 600;
 }
 
-/* WINDOW SYSTEM */
+/* REALISTIC DRAGGABLE & RESIZABLE WINDOW SYSTEM */
 .os-window {
     position: absolute;
-    width: 380px;
-    background: #050b0e;
+    width: 420px;
+    height: 320px;
+    background: var(--win-bg);
     border: 1px solid var(--neon-cyan);
-    border-radius: 6px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 15px rgba(57, 217, 255, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(57, 217, 255, 0.25);
     display: none;
     flex-direction: column;
     z-index: 10;
-    top: 50px;
-    left: 50px;
+    top: 40px;
+    left: 40px;
+    resize: both;
+    overflow: hidden;
+    min-width: 280px;
+    min-height: 200px;
 }
 
 .os-window.active {
@@ -335,23 +355,28 @@ h2 {
 }
 
 .window-header {
-    background: #0a171d;
-    padding: 8px 12px;
+    background: #0b1a20;
+    padding: 10px 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--panel-border);
+    cursor: move;
 }
 
 .window-title {
     font-size: 0.75rem;
     font-family: monospace;
     color: var(--neon-cyan);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .window-controls {
     display: flex;
-    gap: 6px;
+    gap: 8px;
 }
 
 .win-btn {
@@ -359,60 +384,197 @@ h2 {
     height: 12px;
     border-radius: 50%;
     cursor: pointer;
+    transition: opacity 0.2s;
 }
 
-.win-close { background: var(--neon-red); }
-.win-min { background: var(--neon-amber); }
-.win-max { background: var(--neon-green); }
+.win-btn:hover { opacity: 0.8; }
+.win-close { background: var(--neon-red); box-shadow: 0 0 6px var(--neon-red); }
+.win-min { background: var(--neon-amber); box-shadow: 0 0 6px var(--neon-amber); }
+.win-max { background: var(--neon-green); box-shadow: 0 0 6px var(--neon-green); }
 
 .window-body {
-    padding: 15px;
+    padding: 16px;
     font-family: monospace;
     font-size: 0.85rem;
-    height: 250px;
+    flex: 1;
     overflow-y: auto;
     color: var(--text);
+    background: rgba(3, 7, 10, 0.95);
 }
 
-/* TASKBAR */
+/* REALISTIC TASKBAR & START MENU */
 .taskbar {
-    height: 40px;
-    background: #020406;
+    height: 44px;
+    background: #020508;
     border-top: 1px solid var(--panel-border);
     display: flex;
     align-items: center;
     padding: 0 15px;
     justify-content: space-between;
+    position: relative;
+    z-index: 100;
+}
+
+.taskbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .start-btn {
     color: var(--neon-green);
     font-family: monospace;
     font-weight: bold;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background: rgba(57, 255, 156, 0.08);
+    border: 1px solid rgba(57, 255, 156, 0.2);
+    transition: 0.2s;
+}
+
+.start-btn:hover {
+    background: rgba(57, 255, 156, 0.2);
+    box-shadow: 0 0 10px rgba(57, 255, 156, 0.3);
+}
+
+.taskbar-apps {
+    display: flex;
+    gap: 8px;
+}
+
+.taskbar-tab {
+    padding: 4px 10px;
+    background: rgba(57, 217, 255, 0.1);
+    border: 1px solid rgba(57, 217, 255, 0.3);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: var(--neon-cyan);
+    font-family: monospace;
+    cursor: pointer;
+    display: none;
+}
+
+.taskbar-tab.active {
+    display: block;
+}
+
+.start-menu {
+    position: absolute;
+    bottom: 50px;
+    left: 12px;
+    width: 240px;
+    background: #071318;
+    border: 1px solid var(--neon-green);
+    border-radius: 6px;
+    padding: 12px;
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.9), 0 0 20px rgba(57, 255, 156, 0.2);
+    z-index: 200;
+}
+
+.start-menu.active {
+    display: flex;
+}
+
+.start-item {
+    padding: 8px 12px;
+    border-radius: 4px;
+    color: var(--text);
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.2s;
+}
+
+.start-item:hover {
+    background: rgba(57, 255, 156, 0.15);
+    color: var(--neon-green);
 }
 
 .sys-time {
     font-family: monospace;
     font-size: 0.8rem;
-    color: var(--text-muted);
+    color: var(--neon-cyan);
+    background: rgba(57, 217, 255, 0.05);
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(57, 217, 255, 0.15);
 }
 
-/* CARD GRIDS */
-.grid-4 {
+/* TERMINAL INTERACTIVE STYLING */
+.term-input-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.term-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--neon-green);
+    font-family: monospace;
+    font-size: 0.85rem;
+    flex: 1;
+}
+
+/* FILE EXPLORER STYLING */
+.file-item {
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+    transition: 0.2s;
+}
+
+.file-item:hover {
+    background: rgba(57, 217, 255, 0.1);
+    color: var(--neon-cyan);
+}
+
+/* GAME CANVAS */
+#snakeCanvas {
+    background: #020508;
+    border: 1px solid var(--neon-green);
+    display: block;
+    margin: 10px auto;
+}
+
+/* LAYOUT 2-COLUMN STRUCTURE FOR SECTIONS */
+.layout-split {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+@media (max-width: 900px) {
+    .layout-split { grid-template-columns: 1fr; }
+}
+
+/* CARD GRIDS & PANELS */
+.grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 20px;
 }
 
 .panel-card {
     background: var(--panel);
     border: 1px solid var(--panel-border);
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 24px;
     position: relative;
     overflow: hidden;
@@ -424,7 +586,7 @@ h2 {
     position: absolute;
     top: 0;
     left: 0;
-    width: 2px;
+    width: 3px;
     height: 100%;
     background: var(--neon-green);
 }
@@ -432,23 +594,24 @@ h2 {
 .panel-card:hover {
     transform: translateY(-4px);
     border-color: var(--neon-green);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5), 0 0 15px rgba(57, 255, 156, 0.1);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5), 0 0 15px rgba(57, 255, 156, 0.15);
 }
 
 .card-icon {
-    width: 40px;
-    height: 40px;
-    background: rgba(57, 255, 156, 0.05);
-    border-radius: 4px;
+    width: 44px;
+    height: 44px;
+    background: rgba(57, 255, 156, 0.08);
+    border-radius: 6px;
     display: grid;
     place-items: center;
     margin-bottom: 16px;
     color: var(--neon-green);
+    font-size: 1.4rem;
 }
 
 .panel-card h3 {
     margin: 0 0 10px;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
 }
 
 .panel-card p {
@@ -463,7 +626,7 @@ h2 {
     background: var(--panel);
     border: 1px solid var(--panel-border);
     padding: 20px;
-    border-radius: 6px;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -494,17 +657,7 @@ h2 {
 .status-monitoring { background: rgba(57, 217, 255, 0.1); color: var(--neon-cyan); border: 1px solid var(--neon-cyan); }
 .status-containment { background: rgba(255, 70, 93, 0.1); color: var(--neon-red); border: 1px solid var(--neon-red); }
 
-/* SYSTEM TELEMETRY */
-.telemetry-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-}
-
-@media (max-width: 900px) {
-    .telemetry-grid { grid-template-columns: 1fr; }
-}
-
+/* SYSTEM TELEMETRY METERS */
 .meter-group {
     display: flex;
     flex-direction: column;
@@ -515,7 +668,7 @@ h2 {
     background: var(--panel);
     border: 1px solid var(--panel-border);
     padding: 16px;
-    border-radius: 6px;
+    border-radius: 8px;
 }
 
 .meter-info {
@@ -550,12 +703,12 @@ h2 {
 .terminal-box {
     background: #020406;
     border: 1px solid var(--panel-border);
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 20px;
     font-family: monospace;
     font-size: 0.8rem;
     color: var(--neon-green);
-    height: 280px;
+    height: 300px;
     overflow-y: auto;
     box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
 }
@@ -581,7 +734,7 @@ h2 {
 .file-card {
     background: var(--panel);
     border: 1px solid var(--panel-border);
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 20px;
     font-family: monospace;
     position: relative;
@@ -625,10 +778,10 @@ footer strong {
 /* RESPONSIVE DESIGN */
 @media (max-width: 768px) {
     nav div:last-child { display: none; }
-    .hero { min-height: 70vh; }
-    h1 { font-size: 2.8rem; }
-    .desktop-container { height: 480px; }
-    .os-window { width: 90%; left: 5% !important; top: 20px !important; }
+    .hero { min-height: 60vh; }
+    h1 { font-size: 2.5rem; }
+    .desktop-container { height: 520px; }
+    .os-window { width: 92% !important; left: 4% !important; top: 20px !important; }
 }
 </style>
 </head>
@@ -645,134 +798,170 @@ footer strong {
     <div>
         <a href="#simulator">Simulator</a>
         <a href="#divisions">Divisions</a>
-        <a href="#experiments">Experiments</a>
-        <a href="#status">Status</a>
-        <a href="#files">Files</a>
+        <a href="#experiments">Subroutines</a>
+        <a href="#status">Telemetry</a>
+        <a href="#files">Archives</a>
     </div>
 </nav>
 
 <!-- HERO SECTION -->
 <section class="hero">
     <div class="badge">⚠ CLASSIFIED FACILITY — LEVEL 07</div>
-    <h1>NEXUS-07 <span>OPERATING SYSTEM</span></h1>
-    <p>A next-generation cybernetic operating environment engineered for real-time neural simulation, core telemetry monitoring, and secure classified file extraction.</p>
+    <h1>NEXUS-OS <span>DESKTOP ENVIRONMENT</span></h1>
+    <p>A realistic interactive web desktop simulation equipped with draggable windows, live shell execution, customizable theme controls, and direct terminal protocols.</p>
     <div class="btn-group">
-        <a href="#simulator" class="btn btn-primary">ENTER FACILITY</a>
-        <a href="#files" class="btn btn-secondary">VIEW CLASSIFIED FILES</a>
+        <a href="#simulator" class="btn btn-primary">LAUNCH SIMULATOR</a>
+        <a href="#files" class="btn btn-secondary">VIEW ARCHIVES</a>
     </div>
 </section>
 
-<!-- OS SIMULATOR SECTION -->
+<!-- ENHANCED REALISTIC OS SIMULATOR SECTION -->
 <section id="simulator">
-    <div class="section-title">// SIMULATION CORE</div>
-    <h2>Interactive Desktop Interface</h2>
-    <p class="section-desc">Access the virtualized workstation below. Click any module icon to initialize sub-routines.</p>
+    <div class="section-title">// SYSTEM WORKSTATION</div>
+    <h2>Interactive Desktop Simulator</h2>
+    <p class="section-desc">Experience a realistic desktop environment. Open windows, type commands in the interactive terminal, launch mini-games, or adjust system settings in real time.</p>
 
-    <div class="desktop-container">
-        <!-- Desktop Grid Icons -->
-        <div class="desktop-screen">
-            <div class="app-icon" onclick="openWindow('win-terminal')">
-                <svg viewBox="0 0 24 24"><path d="M4 17l6-5-6-5M12 19h8"/></svg>
-                <span>Terminal</span>
+    <div class="desktop-frame">
+        <div class="desktop-container" id="desktopContainer">
+            
+            <!-- Desktop Shortcuts -->
+            <div class="desktop-screen">
+                <div class="app-icon" onclick="openWindow('win-terminal')">
+                    <svg viewBox="0 0 24 24"><path d="M4 17l6-5-6-5M12 19h8"/></svg>
+                    <span>Terminal</span>
+                </div>
+                <div class="app-icon" onclick="openWindow('win-files')">
+                    <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>Explorer</span>
+                </div>
+                <div class="app-icon" onclick="openWindow('win-browser')">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    <span>Browser</span>
+                </div>
+                <div class="app-icon" onclick="openWindow('win-settings')">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    <span>Settings</span>
+                </div>
+                <div class="app-icon" onclick="openWindow('win-games')">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M8 10v4M15 11h.01M18 13h.01"/></svg>
+                    <span>CyberSnake</span>
+                </div>
+                <div class="app-icon" onclick="openWindow('win-secret')">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span>Vault 🔒</span>
+                </div>
             </div>
-            <div class="app-icon" onclick="openWindow('win-files')">
-                <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                <span>Files</span>
-            </div>
-            <div class="app-icon" onclick="openWindow('win-browser')">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                <span>Browser</span>
-            </div>
-            <div class="app-icon" onclick="openWindow('win-settings')">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                <span>Settings</span>
-            </div>
-            <div class="app-icon" onclick="openWindow('win-games')">
-                <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M8 10v4M15 11h.01M18 13h.01"/></svg>
-                <span>Games</span>
-            </div>
-            <div class="app-icon" onclick="openWindow('win-secret')">
-                <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <span>Secret 🔒</span>
-            </div>
-        </div>
 
-        <!-- Dynamic Windows -->
-        <div id="win-terminal" class="os-window">
-            <div class="window-header">
-                <span class="window-title">TERMINAL // NEXUS-OS v4.09</span>
-                <div class="window-controls"><span class="win-btn win-close" onclick="closeWindow('win-terminal')"></span></div>
+            <!-- INTERACTIVE TERMINAL WINDOW -->
+            <div id="win-terminal" class="os-window" style="top: 30px; left: 30px; width: 440px;">
+                <div class="window-header" onmousedown="dragWindow(event, 'win-terminal')">
+                    <span class="window-title">💻 TERMINAL // NEXUS-SHELL</span>
+                    <div class="window-controls"><span class="win-btn win-close" onclick="closeWindow('win-terminal')"></span></div>
+                </div>
+                <div class="window-body" id="termBody">
+                    <p>> NEXUS-OS [Version 5.0.1]</p>
+                    <p>> Type <span style="color:var(--neon-green)">'help'</span> to view available system commands.</p>
+                    <div id="termOutput"></div>
+                    <div class="term-input-line">
+                        <span style="color:var(--neon-green)">user@nexus:~#</span>
+                        <input type="text" id="termInput" class="term-input" autofocus onkeydown="handleTerminal(event)">
+                    </div>
+                </div>
             </div>
-            <div class="window-body">
-                <p>> SYSTEM INITIALIZED...</p>
-                <p>> TYPE 'help' OR 'status' FOR SYSTEM COMMANDS.</p>
-                <p style="color: var(--neon-green);">> root@nexus-07:~# <span class="blink">_</span></p>
-            </div>
-        </div>
 
-        <div id="win-files" class="os-window">
-            <div class="window-header">
-                <span class="window-title">FILE EXPLORER</span>
-                <div class="window-controls"><span class="win-btn win-close" onclick="closeWindow('win-files')"></span></div>
+            <!-- INTERACTIVE FILE EXPLORER WINDOW -->
+            <div id="win-files" class="os-window" style="top: 70px; left: 120px; width: 400px;">
+                <div class="window-header" onmousedown="dragWindow(event, 'win-files')">
+                    <span class="window-title">📁 FILE EXPLORER</span>
+                    <div class="window-controls"><span class="win-btn win-close" onclick="closeWindow('win-files')"></span></div>
+                </div>
+                <div class="window-body">
+                    <div class="file-item" onclick="readDoc('kernel.sys', 'Core kernel system file. Status: Operational.')">📄 kernel.sys</div>
+                    <div class="file-item" onclick="readDoc('network.log', 'Sub-space network ping logs. Zero packet loss detected.')">📄 network.log</div>
+                    <div class="file-item" onclick="readDoc('bio_matrix.enc', 'ENCRYPTED DATA: Requires Bio-Level Clearance.')">🔐 bio_matrix.enc</div>
+                    <div id="fileContentDisplay" style="margin-top:15px; padding:10px; border:1px solid var(--panel-border); background:#020406; display:none;"></div>
+                </div>
             </div>
-            <div class="window-body">
-                <p>📁 System_Core/</p>
-                <p>📁 Neural_Logs/</p>
-                <p>📄 security_protocol.sys</p>
-                <p>📄 bio_data_matrix.enc</p>
-            </div>
-        </div>
 
-        <div id="win-browser" class="os-window">
-            <div class="window-header">
-                <span class="window-title">CYBER-NET BROWSER</span>
-                <div class="window-controls"><span class="win-btn win-close" onclick="closeWindow('win-browser')"></span></div>
+            <!-- CYBER-NET BROWSER WINDOW -->
+            <div id="win-browser" class="os-window" style="top: 100px; left: 180px; width: 420px;">
+                <div class="window-header" onmousedown="dragWindow(event, 'win-browser')">
+                    <span class="window-title">🌐 CYBER-NET BROWSER</span>
+                    <div class="window-controls"><span class="win-btn win-close" onclick="closeWindow('win-browser')"></span></div>
+                </div>
+                <div class="window-body">
+                    <div style="display:flex; gap:8px; margin-bottom:12px;">
+                        <input type="text" value="https://nexus.local/mesh" readonly style="flex:1; background:#020406; border:1px solid var(--panel-border); color:var(--neon-cyan); padding:4px 8px; font-family:monospace; font-size:0.75rem;">
+                    </div>
+                    <p style="color: var(--neon-cyan); margin-top:0;">[SECURE MESH INTRA-NET]</p>
+                    <p>Facial recognition nodes online. Internal bandwidth: 100 Gbps.</p>
+                    <p>Active nodes: Level 07 Bio-Core, Quantum AI Hub.</p>
+                </div>
             </div>
-            <div class="window-body">
-                <p style="color: var(--neon-cyan);">[CONNECTED TO FACILITY INTRA-NET]</p>
-                <p>Welcome to Nexus Internal Mesh Network.</p>
-                <p>Status: All external ports locked down.</p>
-            </div>
-        </div>
 
-        <div id="win-settings" class="os-window">
-            <div class="window-header">
-                <span class="window-title">CONTROL PANEL</span>
-                <div class="window-controls"><span class="win-btn win-close" onclick="closeWindow('win-settings')"></span></div>
+            <!-- CONTROL PANEL SETTINGS WINDOW -->
+            <div id="win-settings" class="os-window" style="top: 60px; left: 240px; width: 380px;">
+                <div class="window-header" onmousedown="dragWindow(event, 'win-settings')">
+                    <span class="window-title">⚙ SYSTEM SETTINGS</span>
+                    <div class="window-controls"><span class="win-btn win-close" onclick="closeWindow('win-settings')"></span></div>
+                </div>
+                <div class="window-body">
+                    <p>Color Accent Mode:</p>
+                    <button class="btn btn-secondary" style="padding:4px 10px; font-size:0.75rem;" onclick="setAccent('neon-green')">Neon Green</button>
+                    <button class="btn btn-secondary" style="padding:4px 10px; font-size:0.75rem;" onclick="setAccent('neon-cyan')">Neon Cyan</button>
+                    <button class="btn btn-secondary" style="padding:4px 10px; font-size:0.75rem;" onclick="setAccent('neon-purple')">Neon Purple</button>
+                    <hr style="border-color:var(--panel-border); margin:15px 0;">
+                    <p>Neural Sync: 99.1%</p>
+                    <p>Shield Matrix: Active</p>
+                </div>
             </div>
-            <div class="window-body">
-                <p>Theme: Cyberpunk Dark [Active]</p>
-                <p>Shields: Maximum Integrity</p>
-                <p>Neural Sync Rate: 98.4%</p>
-            </div>
-        </div>
 
-        <div id="win-games" class="os-window">
-            <div class="window-header">
-                <span class="window-title">SIMULATIONS // ARCADE</span>
-                <div class="window-controls"><span class="win-btn win-close" onclick="closeWindow('win-games')"></span></div>
+            <!-- PLAYABLE SNAKE GAME WINDOW -->
+            <div id="win-games" class="os-window" style="top: 40px; left: 80px; width: 340px;">
+                <div class="window-header" onmousedown="dragWindow(event, 'win-games')">
+                    <span class="window-title">🎮 CYBERSNAKE v1.0</span>
+                    <div class="window-controls"><span class="win-btn win-close" onclick="closeWindow('win-games')"></span></div>
+                </div>
+                <div class="window-body" style="text-align:center;">
+                    <p style="font-size:0.75rem; margin:0 0 8px;">Use Arrow Keys to Navigate</p>
+                    <canvas id="snakeCanvas" width="260" height="180"></canvas>
+                    <button class="btn btn-primary" style="padding:4px 12px; font-size:0.75rem;" onclick="startSnake()">Start Game</button>
+                </div>
             </div>
-            <div class="window-body">
-                <p style="color: var(--neon-amber);">🎮 CYBER-RUNNER 2077</p>
-                <p>[PRESS START TO INITIATE GRID RUN]</p>
-            </div>
-        </div>
 
-        <div id="win-secret" class="os-window">
-            <div class="window-header">
-                <span class="window-title">CLASSIFIED VAULT</span>
-                <div class="window-controls"><span class="win-btn win-close" onclick="closeWindow('win-secret')"></span></div>
+            <!-- SECRET CLASSIFIED VAULT WINDOW -->
+            <div id="win-secret" class="os-window" style="top: 120px; left: 160px; width: 360px;">
+                <div class="window-header" onmousedown="dragWindow(event, 'win-secret')">
+                    <span class="window-title">🔒 CLASSIFIED VAULT</span>
+                    <div class="window-controls"><span class="win-btn win-close" onclick="closeWindow('win-secret')"></span></div>
+                </div>
+                <div class="window-body">
+                    <p style="color: var(--neon-red);">⚠ RESTRICTED ACCESS AREA</p>
+                    <p>Project AI-Genesis: Autonomous Neural Network deployment initiated inside sandbox environment.</p>
+                </div>
             </div>
-            <div class="window-body">
-                <p style="color: var(--neon-red);">⚠ WARNING: LEVEL 07 CLEARANCE REQUIRED</p>
-                <p>Project AI-Genesis details locked behind biometrics.</p>
-            </div>
-        </div>
 
-        <!-- Taskbar -->
-        <div class="taskbar">
-            <div class="start-btn">⚙ NEXUS-OS</div>
-            <div class="sys-time" id="clock">00:00:00</div>
+            <!-- START MENU -->
+            <div class="start-menu" id="startMenu">
+                <div class="start-item" onclick="openWindow('win-terminal'); toggleStart();">💻 Terminal</div>
+                <div class="start-item" onclick="openWindow('win-files'); toggleStart();">📁 File Explorer</div>
+                <div class="start-item" onclick="openWindow('win-browser'); toggleStart();">🌐 Cyber-Net</div>
+                <div class="start-item" onclick="openWindow('win-games'); toggleStart();">🎮 CyberSnake Mini</div>
+                <div class="start-item" onclick="openWindow('win-settings'); toggleStart();">⚙ Control Panel</div>
+            </div>
+
+            <!-- TASKBAR -->
+            <div class="taskbar">
+                <div class="taskbar-left">
+                    <div class="start-btn" onclick="toggleStart()">⚙ NEXUS</div>
+                    <div class="taskbar-apps">
+                        <span class="taskbar-tab" id="tab-win-terminal" onclick="openWindow('win-terminal')">Terminal</span>
+                        <span class="taskbar-tab" id="tab-win-files" onclick="openWindow('win-files')">Explorer</span>
+                        <span class="taskbar-tab" id="tab-win-browser" onclick="openWindow('win-browser')">Browser</span>
+                    </div>
+                </div>
+                <div class="sys-time" id="clock">00:00:00</div>
+            </div>
         </div>
     </div>
 </section>
@@ -783,11 +972,11 @@ footer strong {
     <h2>Research Divisions</h2>
     <p class="section-desc">Four core branches power the processing matrix of the NEXUS-07 environment.</p>
 
-    <div class="grid-4">
+    <div class="grid-cards">
         <div class="panel-card">
             <div class="card-icon">🧬</div>
             <h3>BioSystems</h3>
-            <p>Manages organic-cybernetic interface protocols and biometrics synthesis.</p>
+            <p>Manages organic-cybernetic interface protocols and bio-feedback synthesis.</p>
         </div>
         <div class="panel-card">
             <div class="card-icon">🤖</div>
@@ -807,13 +996,13 @@ footer strong {
     </div>
 </section>
 
-<!-- ACTIVE EXPERIMENTS -->
+<!-- ACTIVE EXPERIMENTS / SUBROUTINES -->
 <section id="experiments">
-    <div class="section-title">// ACTIVE SUB-ROUTINES</div>
+    <div class="section-title">// ACTIVE SUBROUTINES</div>
     <h2>Active Experiments</h2>
     <p class="section-desc">Ongoing processes currently running inside the kernel workspace.</p>
 
-    <div class="grid-4">
+    <div class="grid-cards">
         <div class="exp-card">
             <div>
                 <div class="exp-header">
@@ -849,29 +1038,29 @@ footer strong {
 
 <!-- SYSTEM STATUS & TELEMETRY -->
 <section id="status">
-    <div class="section-title">// TELEMETRY</div>
-    <h2>System Status</h2>
+    <div class="section-title">// SYSTEM TELEMETRY</div>
+    <h2>Core Diagnostic Meters</h2>
     <p class="section-desc">Real-time hardware metrics and live kernel event logs.</p>
 
-    <div class="telemetry-grid">
+    <div class="layout-split">
         <div class="meter-group">
             <div class="meter-item">
                 <div class="meter-info">
-                    <span>POWER CORE</span>
+                    <span>POWER CORE REACTOR</span>
                     <span><span class="indicator" style="color: var(--neon-green)"></span> 98%</span>
                 </div>
                 <div class="meter-bar"><div class="meter-fill" style="width: 98%;"></div></div>
             </div>
             <div class="meter-item">
                 <div class="meter-info">
-                    <span>LIFE SUPPORT</span>
+                    <span>LIFE SUPPORT MATRIX</span>
                     <span><span class="indicator" style="color: var(--neon-cyan)"></span> 100%</span>
                 </div>
                 <div class="meter-bar"><div class="meter-fill" style="width: 100%; background: var(--neon-cyan); box-shadow: 0 0 10px var(--neon-cyan);"></div></div>
             </div>
             <div class="meter-item">
                 <div class="meter-info">
-                    <span>AI CORE LOAD</span>
+                    <span>AI NEURAL CORE LOAD</span>
                     <span><span class="indicator" style="color: var(--neon-amber)"></span> 74%</span>
                 </div>
                 <div class="meter-bar"><div class="meter-fill" style="width: 74%; background: var(--neon-amber); box-shadow: 0 0 10px var(--neon-amber);"></div></div>
@@ -896,20 +1085,20 @@ footer strong {
     </div>
 </section>
 
-<!-- RESTRICTED FILES -->
+<!-- RESTRICTED ARCHIVES -->
 <section id="files">
     <div class="section-title">// ENCRYPTED ARCHIVES</div>
     <h2>Restricted Files</h2>
     <p class="section-desc">Classified records retrieved from deep memory banks.</p>
 
-    <div class="grid-4">
+    <div class="grid-cards">
         <div class="file-card">
             <div class="file-top">
                 <span>FILE_091.SYS</span>
                 <span>🔒 LOCKED</span>
             </div>
             <h4>PROJECT GENESIS</h4>
-            <p>Initial blue-prints for autonomous AI self-replication within quantum sandboxes.</p>
+            <p>Initial blueprints for autonomous AI self-replication within quantum sandboxes.</p>
         </div>
         <div class="file-card">
             <div class="file-top">
@@ -932,12 +1121,12 @@ footer strong {
 
 <!-- FOOTER -->
 <footer>
-    <p>NEXUS-07 OPERATING SYSTEM SIMULATOR // FACILITY LEVEL 07</p>
+    <p>NEXUS-07 OPERATING SYSTEM SIMULATOR // LEVEL 07 WORKSTATION</p>
     <p>Created & Designed by <strong>David Abe</strong></p>
     <p style="margin-top: 10px; font-size: 0.75rem; color: var(--panel-border);">© 2026 NEXUS CORP. ALL RIGHTS RESERVED.</p>
 </footer>
 
-<!-- SCRIPT -->
+<!-- JAVASCRIPT LOGIC -->
 <script>
 // MOUSE & TOUCH CURSOR TRACKING
 document.addEventListener('mousemove', (e) => {
@@ -952,11 +1141,18 @@ document.addEventListener('touchmove', (e) => {
     }
 });
 
-// OS SIMULATOR WINDOW MANAGEMENT
+// WINDOW SYSTEM & Z-INDEX MANAGEMENT
+let highestZ = 10;
+
 function openWindow(id) {
     const win = document.getElementById(id);
     if (win) {
         win.classList.add('active');
+        highestZ++;
+        win.style.zIndex = highestZ;
+        
+        const tab = document.getElementById('tab-' + id);
+        if (tab) tab.classList.add('active');
     }
 }
 
@@ -964,7 +1160,110 @@ function closeWindow(id) {
     const win = document.getElementById(id);
     if (win) {
         win.classList.remove('active');
+        const tab = document.getElementById('tab-' + id);
+        if (tab) tab.classList.remove('active');
     }
+}
+
+function toggleStart() {
+    const menu = document.getElementById('startMenu');
+    menu.classList.toggle('active');
+}
+
+// DRAGGABLE WINDOW FUNCTIONALITY
+let activeDragWin = null;
+let dragOffsetX = 0;
+let dragOffsetY = 0;
+
+function dragWindow(e, winId) {
+    activeDragWin = document.getElementById(winId);
+    highestZ++;
+    activeDragWin.style.zIndex = highestZ;
+    
+    const rect = activeDragWin.getBoundingClientRect();
+    dragOffsetX = e.clientX - rect.left;
+    dragOffsetY = e.clientY - rect.top;
+
+    document.addEventListener('mousemove', onDrag);
+    document.addEventListener('mouseup', stopDrag);
+}
+
+function onDrag(e) {
+    if (!activeDragWin) return;
+    const desktop = document.getElementById('desktopContainer').getBoundingClientRect();
+    
+    let x = e.clientX - desktop.left - dragOffsetX;
+    let y = e.clientY - desktop.top - dragOffsetY;
+
+    // Boundaries
+    if (x < 0) x = 0;
+    if (y < 0) y = 0;
+    if (x + activeDragWin.offsetWidth > desktop.width) x = desktop.width - activeDragWin.offsetWidth;
+    if (y + activeDragWin.offsetHeight > desktop.height - 44) y = desktop.height - 44 - activeDragWin.offsetHeight;
+
+    activeDragWin.style.left = x + 'px';
+    activeDragWin.style.top = y + 'px';
+}
+
+function stopDrag() {
+    activeDragWin = null;
+    document.removeEventListener('mousemove', onDrag);
+    document.removeEventListener('mouseup', stopDrag);
+}
+
+// INTERACTIVE TERMINAL ENGINE
+function handleTerminal(e) {
+    if (e.key === 'Enter') {
+        const input = document.getElementById('termInput');
+        const cmd = input.value.trim().toLowerCase();
+        const output = document.getElementById('termOutput');
+
+        const line = document.createElement('p');
+        line.innerHTML = `<span style="color:var(--neon-green)">user@nexus:~#</span> ${cmd}`;
+        output.appendChild(line);
+
+        const response = document.createElement('p');
+        response.style.color = 'var(--neon-cyan)';
+
+        switch (cmd) {
+            case 'help':
+                response.innerHTML = 'Commands: <br>- <b>status</b>: Display core system telemetry<br>- <b>clear</b>: Clear terminal screen<br>- <b>ls</b>: List root files<br>- <b>whoami</b>: Show user credentials';
+                break;
+            case 'status':
+                response.innerText = 'POWER REACTOR: 98% | NEURAL CORE: OPTIMAL | SHIELDS: 91%';
+                break;
+            case 'clear':
+                output.innerHTML = '';
+                input.value = '';
+                return;
+            case 'ls':
+                response.innerText = 'kernel.sys  network.log  bio_matrix.enc';
+                break;
+            case 'whoami':
+                response.innerText = 'Logged in as: LEVEL_07_ADMINISTRATOR';
+                break;
+            default:
+                response.style.color = 'var(--neon-red)';
+                response.innerText = `Command not recognized: '${cmd}'. Type 'help' for available commands.`;
+        }
+
+        output.appendChild(response);
+        input.value = '';
+        const body = document.getElementById('termBody');
+        body.scrollTop = body.scrollHeight;
+    }
+}
+
+// FILE EXPLORER READER
+function readDoc(name, content) {
+    const display = document.getElementById('fileContentDisplay');
+    display.style.display = 'block';
+    display.innerHTML = `<strong style="color:var(--neon-cyan)">${name}</strong><p style="margin:5px 0 0;">${content}</p>`;
+}
+
+// CUSTOM ACCENT SETTINGS
+function setAccent(colorVar) {
+    document.documentElement.style.setProperty('--neon-green', `var(--${colorVar})`);
 }
 
 // REAL-TIME SYSTEM CLOCK
@@ -977,6 +1276,55 @@ function updateClock() {
 }
 setInterval(updateClock, 1000);
 updateClock();
+
+// MINI CYBERSNAKE GAME
+let snakeInterval;
+function startSnake() {
+    const canvas = document.getElementById('snakeCanvas');
+    const ctx = canvas.getContext('2d');
+    let snake = [{x: 100, y: 80}, {x: 90, y: 80}, {x: 80, y: 80}];
+    let dx = 10, dy = 0;
+    let food = {x: 150, y: 80};
+
+    clearInterval(snakeInterval);
+
+    document.onkeydown = function(e) {
+        if (e.key === 'ArrowUp' && dy === 0) { dx = 0; dy = -10; }
+        if (e.key === 'ArrowDown' && dy === 0) { dx = 0; dy = 10; }
+        if (e.key === 'ArrowLeft' && dx === 0) { dx = -10; dy = 0; }
+        if (e.key === 'ArrowRight' && dx === 0) { dx = 10; dy = 0; }
+    };
+
+    snakeInterval = setInterval(() => {
+        const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+
+        if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) {
+            clearInterval(snakeInterval);
+            alert('Game Over! Score: ' + (snake.length - 3));
+            return;
+        }
+
+        snake.unshift(head);
+
+        if (head.x === food.x && head.y === food.y) {
+            food = {
+                x: Math.floor(Math.random() * (canvas.width / 10)) * 10,
+                y: Math.floor(Math.random() * (canvas.height / 10)) * 10
+            };
+        } else {
+            snake.pop();
+        }
+
+        ctx.fillStyle = '#020508';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#ffb039';
+        ctx.fillRect(food.x, food.y, 8, 8);
+
+        ctx.fillStyle = '#39ff9c';
+        snake.forEach(part => ctx.fillRect(part.x, part.y, 8, 8));
+    }, 100);
+}
 </script>
 </body>
 </html>
